@@ -38,7 +38,10 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
 
             points.push([columns[0], columns[1]]);
             if(i>0) {
-                graphpoints.push([Number(columns[0]), Number(columns[1])]);
+                graphpoints.push([
+                    Number(columns[0].replace(",",".")),
+                    Number(columns[1].replace(",",".")) 
+                ]);
             }
         }
         document.getElementById("error-container").children[0].classList.remove("show");

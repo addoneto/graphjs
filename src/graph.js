@@ -39,7 +39,7 @@ class Graph {
 
         this.drawGrid(ctx);
 
-        ctx.fillStyle = "rgb(10, 132,255)";
+        ctx.fillStyle = "rgb(0, 0, 0)";
 
         this.drawPoints(ctx);
     }
@@ -57,12 +57,12 @@ class Graph {
 
     drawLabels(ctx) {
         ctx.fillStyle = "rgb(38, 38, 41)";
-        ctx.font = "60px CM-Bold";
+        ctx.font = "80px Computer-Modern-Bold";
         
         ctx.textAlign = "center";
         ctx.fillText(this.graphInfo.title, (this.width/2) + this.posX, this.posY - 20);
 
-        ctx.font = "40px CM";
+        ctx.font = "40px Computer-Modern";
 
         ctx.fillText(this.graphInfo.xlabel, (this.width/2) + this.posX, this.posY + this.height + 50);
 

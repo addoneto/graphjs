@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "Computer-Modern";
+    src: url(../fonts/cmunrm.ttf);
+}
+
+@font-face {
+    font-family: "Computer-Modern-Bold";
+    src: url(../fonts/cmunbx.ttf);
+}
+
 body {
     background-color: #101010;
     font-family: "Inter", sans-serif;
