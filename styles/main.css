@@ -85,7 +85,7 @@ button:hover {
 }
 
 #table-container{
-    min-width: 300px;
+    min-width: 200px;
     min-height: 400px;
     margin: 0 10px;
     padding: 20px 0;
@@ -185,7 +185,7 @@ td, th {
     padding: 10px 5px;
     color: #eeeeee;
     border: 0;
-    transition: .5s;
+    transition: .2s;
     margin-bottom: 20px;
     font-family: "Inter";
     margin-top: 10px;

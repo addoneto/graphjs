@@ -2,8 +2,8 @@ import { Graph } from "./graph.js"
 import { Canvas } from "./canvas.js"
 import { points00 } from "./testpoints.js"
 
-let graph = new Graph(150, 150, 1920, 1080);
-let canvas = new Canvas("graph", 2200, 1400, 0, 0, 2);
+let graph = new Graph(150, 150, 1800, 1000);
+let canvas = new Canvas("graph", 2000, 1300, 0, 0, 2);
 
 window.onload = () => {
     canvas.create();
@@ -37,7 +37,7 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
                 document.getElementById("error-container").children[0].classList.add("show");
                 setTimeout(() => {
                     document.getElementById("error-container").children[0].classList.remove("show");
-                }, "10000");
+                }, "1000");
                 return;
             }
 
