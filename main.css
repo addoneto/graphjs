@@ -55,7 +55,7 @@ table {
 }
 
 th {
-    font-style: italic;
+    /* font-style: italic; */
     background-color: #a2a7b0;
     color: white;
     

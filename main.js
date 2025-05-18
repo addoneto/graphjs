@@ -1,8 +1,8 @@
 import { Graph } from "./graph.js"
 import { Canvas } from "./canvas.js"
 
-let graph = new Graph(150, 150, 1000, 700);
-let canvas = new Canvas("canvas-container", 1500, 1000, 0, 0, 2);
+let graph = new Graph(150, 150, 1920, 1080);
+let canvas = new Canvas("graph", 2200, 1500, 0, 0, 3);
 
 window.onload = () => {
     canvas.create();
@@ -27,9 +27,12 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
             let columns = rows[i].split("\t");
             if(columns.length != 2) {
                 // show error
-                document.getElementById("error").innerHTML = "Ocorreu um erro ao colar os dados.";
-                document.getElementById("log").innerHTML = "Texto colado: " + text;
-                document.getElementById("error").classList.add("show");
+                document.getElementById("error-container").children[0].innerHTML = "Ocorreu um erro ao colar os dados.";
+                //document.getElementById("log").innerHTML = "Texto colado: " + text;
+                document.getElementById("error-container").children[0].classList.add("show");
+                setTimeout(() => {
+                    document.getElementById("error-container").children[0].classList.remove("show");
+                }, "10000");
                 return;
             }
 
@@ -38,7 +41,7 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
                 graphpoints.push([Number(columns[0]), Number(columns[1])]);
             }
         }
-        document.getElementById("error").classList.remove("show");
+        document.getElementById("error-container").children[0].classList.remove("show");
 
         console.log(points);
         updateTable(points);
@@ -70,3 +73,21 @@ function updateTable(arr){
         table.children[1].children[i].children[1].innerHTML = arr[i + 1][1];
     }
 }
+let config = false;
+
+document.getElementById("configbtn").addEventListener("click", () => {
+    document.getElementById("config-panel").style.display = "flex";
+    config = true;
+});
+
+document.getElementById("config-panel").addEventListener("click", e => {
+    
+    let p = document.getElementById("config-panel").children[0].getBoundingClientRect();
+    if(e.clientX < p.x || e.clientY > p.right || e.clientY < p.y || e.clientY > p.bottom) {
+        document.getElementById("config-panel").style.display = "none";
+        
+        // update graph data
+
+        config = false;
+    }
+});

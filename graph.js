@@ -35,7 +35,7 @@ class Graph {
         this.drawLabels(ctx);
 
         ctx.fillStyle = "rgb(142, 142, 147)";
-        ctx.font = "20px CM";
+        ctx.font = "30px CM";
 
         this.drawGrid(ctx);
 
@@ -57,12 +57,12 @@ class Graph {
 
     drawLabels(ctx) {
         ctx.fillStyle = "rgb(38, 38, 41)";
-        ctx.font = "40px CM-Bold";
+        ctx.font = "60px CM-Bold";
         
         ctx.textAlign = "center";
         ctx.fillText(this.graphInfo.title, (this.width/2) + this.posX, this.posY - 20);
 
-        ctx.font = "30px CM";
+        ctx.font = "40px CM";
 
         ctx.fillText(this.graphInfo.xlabel, (this.width/2) + this.posX, this.posY + this.height + 50);
 
@@ -192,9 +192,9 @@ class Graph {
 function round(n, order, up = true) {
     let x = n;
 
-    if((up && x === Math.pow(10, order + 1)) || (!up && x === Math.pow(10, order - 1))) {    
-        return x;
-    } 
+    // if((up && x === Math.pow(10, order + 1)) || (!up && x === Math.pow(10, order - 1))) {    
+    //     return x;
+    // } 
     
     x = up ? x + Math.pow(10, order) : x - Math.pow(10, order);
     x -= x % Math.pow(10, order);
