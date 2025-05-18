@@ -1,12 +1,17 @@
 import { Graph } from "./graph.js"
 import { Canvas } from "./canvas.js"
+import { points00 } from "./testpoints.js"
 
 let graph = new Graph(150, 150, 1920, 1080);
-let canvas = new Canvas("graph", 2200, 1500, 0, 0, 3);
+let canvas = new Canvas("graph", 2200, 1400, 0, 0, 2);
 
 window.onload = () => {
     canvas.create();
     graph.render(canvas.ctx);
+
+    let arr = points00;
+    arr.unshift(["Eixo X","Eixo Y"]);
+    updateTable(arr);
 }
 
 const table = document.getElementById("data-table");

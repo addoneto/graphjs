@@ -1,5 +1,7 @@
 import { points00, points01, points02  } from "./testpoints.js";
 
+// reduzir para eixos com order <= -3
+
 class Graph {
     constructor(posX, posY, w, h) {
         this.posX = posX;
@@ -13,8 +15,8 @@ class Graph {
 
         this.graphInfo = {
             title: "Título do gráfico",
-            xlabel: "Label X",
-            ylabel: "Label Y"
+            xlabel: "Eixo X",
+            ylabel: "Eixo Y"
         }
     }
 
@@ -27,17 +29,19 @@ class Graph {
     }
 
     render(ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, this.width + this.posX + 100, this.height + this.posY + 100);
+
         this.getFramingBoundaries();
         this.debugFrame();
 
-        this.drawAxis(ctx);
-
         this.drawLabels(ctx);
 
-        ctx.fillStyle = "rgb(142, 142, 147)";
         ctx.font = "30px CM";
 
         this.drawGrid(ctx);
+
+        this.drawAxis(ctx);
 
         ctx.fillStyle = "rgb(0, 0, 0)";
 
@@ -45,26 +49,34 @@ class Graph {
     }
 
     drawAxis(ctx) {
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, this.width + this.posX + 100, this.height + this.posY + 100);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgb(0, 0, 0)";
 
         ctx.beginPath();
         ctx.moveTo(this.posX, this.posY);
         ctx.lineTo(this.posX, this.posY + this.height);
         ctx.lineTo(this.posX + this.width, this.posY + this.height);
         ctx.stroke();
+
+        ctx.strokeStyle = "rgb(120, 120, 120)";
+
+        ctx.beginPath();
+        ctx.moveTo(this.posX, this.posY);
+        ctx.lineTo(this.posX + this.width, this.posY);
+        ctx.lineTo(this.posX + this.width, this.posY + this.height);
+        ctx.stroke();
     }
 
     drawLabels(ctx) {
         ctx.fillStyle = "rgb(38, 38, 41)";
-        ctx.font = "80px Computer-Modern-Bold";
+        ctx.font = "60px Computer-Modern-Bold";
         
         ctx.textAlign = "center";
-        ctx.fillText(this.graphInfo.title, (this.width/2) + this.posX, this.posY - 20);
+        ctx.fillText(this.graphInfo.title, (this.width/2) + this.posX, this.posY -20);
 
         ctx.font = "40px Computer-Modern";
 
-        ctx.fillText(this.graphInfo.xlabel, (this.width/2) + this.posX, this.posY + this.height + 50);
+        ctx.fillText(this.graphInfo.xlabel, (this.width/2) + this.posX, this.posY + this.height + 80);
 
         ctx.save();
         ctx.translate(this.posX - 80, (this.height/2) + this.posY);
@@ -106,7 +118,10 @@ class Graph {
         }   
 
         xavg = xavg / this.points.length;
-        yavg = yavg / this.points.length
+        yavg = yavg / this.points.length;
+
+        this.xavg = xavg;
+        this.yavg = yavg;
 
         this.yavg_magnitude = Math.round(Math.log10(yavg));
         this.yavg_order = Math.pow(10, this.yavg_magnitude);
@@ -128,15 +143,31 @@ class Graph {
     }
 
     drawGrid(ctx){
+        ctx.lineWidth = 1;
+        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.strokeStyle = "rgb(180, 180, 180)";
+
         let nx = this.frameXmax - this.frameXmin;
         nx = nx / this.xavg_order;
+
+        let xmult = 1;
+        if(nx > 10) {
+            // ajustar proporcionalmente
+            xmult = 2;
+        }
+
+        ctx.textAlign = "left";
 
         this.xTileWidth = this.width / nx;
 
         console.log(nx);
         console.log(this.xTileWidth);
 
-        for(let i = 0; i <= nx; i++){
+        if (this.xavg_magnitude >= 3) {
+            ctx.fillText("10^" + this.xavg_magnitude, this.posX + this.width, this.posY + this.height + 40);
+        }
+
+        for(let i = 0; i <= nx; i+= xmult){
             let xpos = i * this.xTileWidth;
             let label = this.frameXmin + i * this.xavg_order;
 
@@ -144,8 +175,12 @@ class Graph {
             ctx.lineTo(this.posX + xpos, this.posY);
             ctx.stroke();
 
+            if (this.xavg_magnitude >= 3) {
+                label = Number.parseFloat(label / this.xavg_order).toFixed(2);
+            }
+
             label = label.toString();
-            ctx.fillText(label, this.posX + xpos, this.posY + this.height + 20);
+            ctx.fillText(label, this.posX + xpos, this.posY + this.height + 30);
         }
 
         let ny = this.frameYmax - this.frameYmin;
@@ -158,13 +193,27 @@ class Graph {
 
         ctx.textAlign = "right";
 
-        for(let i = 0; i <= ny; i++) {
+        let ymult = 1;
+        if(ny > 10) {
+            // ajustar proporcionalmente
+            ymult = 2;
+        }
+
+        if (this.yavg_magnitude >= 3) {
+            ctx.fillText("10^" + this.yavg_magnitude, this.posX - 30, this.posY - 50);
+        }
+
+        for(let i = 0; i <= ny; i+= ymult) {
             let ypos = i * this.yTileWidth;
             let label = this.frameYmin + i * this.yavg_order;
 
             ctx.moveTo(this.posX, this.posY + this.height - ypos);
             ctx.lineTo(this.posX + this.width, this.posY + this.height - ypos);
             ctx.stroke();
+
+            if (this.yavg_magnitude >= 3) {
+                label = Number.parseFloat(label / this.yavg_order).toFixed(2);
+            }
 
             label = label.toString();
             ctx.fillText(label, this.posX - 10, this.posY + this.height - ypos);
