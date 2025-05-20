@@ -2,19 +2,23 @@ import { Graph } from "./graph.js"
 import { Canvas } from "./canvas.js"
 import { points00 } from "./testpoints.js"
 
-let graph = new Graph(150, 150, 1800, 1000);
-let canvas = new Canvas("graph", 2000, 1300, 0, 0, 2);
+let graph = new Graph(150, 150, 1780, 1000);
+let canvas = new Canvas("cgraph", 2000, 1300, 0, 0, 2);
 
 window.onload = () => {
     canvas.create();
     graph.render(canvas.ctx);
 
-    let arr = points00;
+    let arr = points00.slice();
     arr.unshift(["Eixo X","Eixo Y"]);
     updateTable(arr);
 }
 
 const table = document.getElementById("data-table");
+
+const input_title = document.getElementById("title");
+const input_xaxis = document.getElementById("xaxis");
+const input_yaxis = document.getElementById("yaxis");
 
 document.getElementById("savegraph").addEventListener("click", () => {
     let link = document.createElement('a');
@@ -59,6 +63,9 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
             ylabel : points[0][1],
         }
 
+        input_xaxis.value = info.xlabel;
+        input_yaxis.value = info.ylabel;
+
         graph.update(canvas.ctx, graphpoints, info);
     })
 });
@@ -89,13 +96,30 @@ document.getElementById("configbtn").addEventListener("click", () => {
 });
 
 document.getElementById("config-panel").addEventListener("click", e => {
-    
     let p = document.getElementById("config-panel").children[0].getBoundingClientRect();
     if(e.clientX < p.x || e.clientY > p.right || e.clientY < p.y || e.clientY > p.bottom) {
-        document.getElementById("config-panel").style.display = "none";
-        
-        // update graph data
-
-        config = false;
+        closeConfiguration();
     }
 });
+
+window.addEventListener("keypress", function(e) {
+  if (e.key === "Enter" && config === true) {   
+    closeConfiguration();
+  }
+});
+
+
+function closeConfiguration() {
+    
+    document.getElementById("config-panel").style.display = "none";
+
+    let info = {
+        title: input_title.value,
+        xlabel: input_xaxis.value,
+        ylabel: input_yaxis.value,
+    }
+
+    graph.update(canvas.ctx, null, info);
+
+    config = false;
+}

@@ -13,22 +13,28 @@ class Graph {
 
         this.labelDecimals = 2;
 
-        this.graphInfo = {
+        this.graphConfig = {
             title: "Título do gráfico",
             xlabel: "Eixo X",
-            ylabel: "Eixo Y"
+            ylabel: "Eixo Y",
+            decimal: 2,
         }
     }
 
     update(ctx, points, info) {
-        console.log(points);
-        this.points = points;
-        this.graphInfo.xlabel = info.xlabel;
-        this.graphInfo.ylabel = info.ylabel;
+        if(points !== null){ 
+            this.points = points;
+        } 
+        this.graphConfig.xlabel = info.xlabel ? info.xlabel : this.graphConfig.xlabel;
+        this.graphConfig.ylabel = info.ylabel ? info.ylabel : this.graphConfig.ylabel;
+
+        this.graphConfig.title = info.title ? info.title : this.graphConfig.title;
         this.render(ctx);
     }
 
     render(ctx) {
+        console.log(points00);
+
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, this.width + this.posX + 100, this.height + this.posY + 100);
 
@@ -46,6 +52,8 @@ class Graph {
         ctx.fillStyle = "rgb(0, 0, 0)";
 
         this.drawPoints(ctx);
+
+        console.log(this.points);
     }
 
     drawAxis(ctx) {
@@ -72,16 +80,16 @@ class Graph {
         ctx.font = "60px Computer-Modern-Bold";
         
         ctx.textAlign = "center";
-        ctx.fillText(this.graphInfo.title, (this.width/2) + this.posX, this.posY -20);
+        ctx.fillText(this.graphConfig.title, (this.width/2) + this.posX, this.posY -20);
 
         ctx.font = "40px Computer-Modern";
 
-        ctx.fillText(this.graphInfo.xlabel, (this.width/2) + this.posX, this.posY + this.height + 80);
+        ctx.fillText(this.graphConfig.xlabel, (this.width/2) + this.posX, this.posY + this.height + 80);
 
         ctx.save();
         ctx.translate(this.posX - 80, (this.height/2) + this.posY);
         ctx.rotate(-Math.PI/2);
-        ctx.fillText(this.graphInfo.ylabel, 0, 0);
+        ctx.fillText(this.graphConfig.ylabel, 0, 0);
         ctx.restore();
     }
 
@@ -144,7 +152,6 @@ class Graph {
 
     drawGrid(ctx){
         ctx.lineWidth = 1;
-        ctx.fillStyle = "rgb(0, 0, 0)";
         ctx.strokeStyle = "rgb(180, 180, 180)";
 
         let nx = this.frameXmax - this.frameXmin;
@@ -163,9 +170,17 @@ class Graph {
         console.log(nx);
         console.log(this.xTileWidth);
 
+        ctx.fillStyle = "rgb(150, 150, 150)";
+
         if (this.xavg_magnitude >= 3) {
             ctx.fillText("10^" + this.xavg_magnitude, this.posX + this.width, this.posY + this.height + 40);
         }
+
+        if (this.yavg_magnitude >= 3) {
+            ctx.fillText("10^" + this.yavg_magnitude, this.posX - 100, this.posY - 50);
+        }
+
+        ctx.fillStyle = "rgb(0, 0, 0)";
 
         for(let i = 0; i <= nx; i+= xmult){
             let xpos = i * this.xTileWidth;
@@ -175,12 +190,16 @@ class Graph {
             ctx.lineTo(this.posX + xpos, this.posY);
             ctx.stroke();
 
+            // tirar do for, criar dos loops separados
+            // tirar o 3 hardcoded, permitir config
             if (this.xavg_magnitude >= 3) {
-                label = Number.parseFloat(label / this.xavg_order).toFixed(2);
+                label = label / this.xavg_order;
             }
 
+            label = Number.parseFloat(label).toFixed(this.graphConfig.decimal);
+
             label = label.toString();
-            ctx.fillText(label, this.posX + xpos, this.posY + this.height + 30);
+            ctx.fillText(label, this.posX + xpos - 15, this.posY + this.height + 40);
         }
 
         let ny = this.frameYmax - this.frameYmin;
@@ -199,10 +218,6 @@ class Graph {
             ymult = 2;
         }
 
-        if (this.yavg_magnitude >= 3) {
-            ctx.fillText("10^" + this.yavg_magnitude, this.posX - 30, this.posY - 50);
-        }
-
         for(let i = 0; i <= ny; i+= ymult) {
             let ypos = i * this.yTileWidth;
             let label = this.frameYmin + i * this.yavg_order;
@@ -212,8 +227,10 @@ class Graph {
             ctx.stroke();
 
             if (this.yavg_magnitude >= 3) {
-                label = Number.parseFloat(label / this.yavg_order).toFixed(2);
+                label = label / this.yavg_order;
             }
+
+            label = Number.parseFloat(label).toFixed(this.graphConfig.decimal);
 
             label = label.toString();
             ctx.fillText(label, this.posX - 10, this.posY + this.height - ypos);
