@@ -91,6 +91,12 @@ button:hover {
     padding: 20px 0;
 }
 
+#table-container div {
+    margin-top: 10px;
+    text-align: center;
+    color: #bcbcbc;
+}
+
 table {
     width: 90%;
     margin: auto;

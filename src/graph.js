@@ -1,6 +1,5 @@
-import { points00, points01, points02  } from "./testpoints.js";
-
-// reduzir para eixos com order <= -3
+import { points00, points01, points02,linear, noiselinear, quadratic, log, exp, horizontal, vertical } from "./testpoints.js";
+import regression from "./regression.js";
 
 class Graph {
     constructor(posX, posY, w, h) {
@@ -9,7 +8,7 @@ class Graph {
         this.width = w;
         this.height = h
 
-        this.points = points00;
+        this.points = noiselinear;
 
         this.labelDecimals = 2;
 
@@ -18,6 +17,7 @@ class Graph {
             xlabel: "Eixo X",
             ylabel: "Eixo Y",
             decimal: 2,
+            legend_font: 10,
         }
     }
 
@@ -29,14 +29,16 @@ class Graph {
         this.graphConfig.ylabel = info.ylabel ? info.ylabel : this.graphConfig.ylabel;
 
         this.graphConfig.title = info.title ? info.title : this.graphConfig.title;
-        this.render(ctx);
+        return this.render(ctx);
     }
 
     render(ctx) {
-        console.log(points00);
+        // console.log(points00);
+
+        // ctx.restore();
 
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, this.width + this.posX + 100, this.height + this.posY + 100);
+        ctx.fillRect(0, 0, this.width + this.posX + 100, this.height + this.posY + 150);
 
         this.getFramingBoundaries();
         this.debugFrame();
@@ -53,7 +55,7 @@ class Graph {
 
         this.drawPoints(ctx);
 
-        console.log(this.points);
+        return this.drawRegressionLine(ctx);
     }
 
     drawAxis(ctx) {
@@ -80,14 +82,14 @@ class Graph {
         ctx.font = "60px Computer-Modern-Bold";
         
         ctx.textAlign = "center";
-        ctx.fillText(this.graphConfig.title, (this.width/2) + this.posX, this.posY -20);
+        ctx.fillText(this.graphConfig.title, (this.width/2) + this.posX, this.posY - 30);
 
         ctx.font = "40px Computer-Modern";
 
-        ctx.fillText(this.graphConfig.xlabel, (this.width/2) + this.posX, this.posY + this.height + 80);
+        ctx.fillText(this.graphConfig.xlabel, (this.width/2) + this.posX, this.posY + this.height + 100);
 
         ctx.save();
-        ctx.translate(this.posX - 80, (this.height/2) + this.posY);
+        ctx.translate(this.posX - 100, (this.height/2) + this.posY);
         ctx.rotate(-Math.PI/2);
         ctx.fillText(this.graphConfig.ylabel, 0, 0);
         ctx.restore();
@@ -96,23 +98,29 @@ class Graph {
     debugFrame() {
         console.log("X max: " + this.max_x + " | " + "X frame max: " + this.frameXmax);
         console.log("X min: " + this.min_x + " | " + "X frame min: " + this.frameXmin);
-        console.log("X avg order: 10^" + this.xavg_magnitude + " = " + this.xavg_order);
+        console.log("X avg order: 10^" + this.xavg_dist_magnitude + " = " + this.xavg_dist_order);
         console.log("__________________________");
         console.log("Y max: " + this.max_y + " | " + "Y frame max: " + this.frameYmax);
         console.log("Y min: " + this.min_y + " | " + "Y frame min: " + this.frameYmin);
-        console.log("Y avg order: 10^" + this.yavg_magnitude + " = " + this.yavg_order);
+        console.log("Y avg order: 10^" + this.yavg_dist_magnitude + " = " + this.yavg_dist_order);
     }
 
     getFramingBoundaries() {
-        this.sortPoitns();
+        this.sortPoints();
 
         this.max_y = this.points[0][1];
         this.min_y = this.points[0][1];
 
-        let yavg = 0;
-        let xavg = 0;
+        this.xavg = 0;
+        this.yavg = 0;
+
+        let yavg_dist = 0;
+        let xavg_dist = 0;
 
         for(let i = 0; i < this.points.length; i++) {
+            this.xavg += this.points[i][0];
+            this.yavg += this.points[i][1];
+
             if(this.points[i][1] > this.max_y) {
                 this.max_y = this.points[i][1];
             } else if(this.points[i][1] < this.min_y) {
@@ -120,33 +128,36 @@ class Graph {
             }
         
             if (i > 0) {
-                yavg += (this.points[i][1] - this.points[i-1][1]);
-                xavg += (this.points[i][0] - this.points[i-1][0]);
+                yavg_dist += (this.points[i][1] - this.points[i-1][1]);
+                xavg_dist += (this.points[i][0] - this.points[i-1][0]);
             }   
         }   
 
-        xavg = xavg / this.points.length;
-        yavg = yavg / this.points.length;
+        this.xavg = this.xavg / this.points.length;
+        this.yavg = this.yavg / this.points.length;
 
-        this.xavg = xavg;
-        this.yavg = yavg;
+        xavg_dist = Math.abs(xavg_dist / this.points.length);
+        yavg_dist = Math.abs(yavg_dist / this.points.length);
 
-        this.yavg_magnitude = Math.round(Math.log10(yavg));
-        this.yavg_order = Math.pow(10, this.yavg_magnitude);
-        this.frameYmax = round(this.max_y, this.yavg_magnitude);
-        this.frameYmin = round(this.min_y, this.yavg_magnitude, false);
+        this.xavg_dist = xavg_dist;
+        this.yavg_dist = yavg_dist;
+
+        this.yavg_dist_magnitude = Math.round(Math.log10(yavg_dist));
+        this.yavg_dist_order = Math.pow(10, this.yavg_dist_magnitude);
+        this.frameYmax = round(this.max_y, this.yavg_dist_magnitude);
+        this.frameYmin = round(this.min_y, this.yavg_dist_magnitude, false);
 
         this.max_x = this.points[this.points.length - 1][0];
         this.min_x = this.points[0][0];
 
-        this.xavg_magnitude = Math.round(Math.log10(xavg));
-        this.xavg_order = Math.pow(10, this.xavg_magnitude);
-        this.frameXmax = round(this.max_x, this.xavg_magnitude);
-        this.frameXmin = round(this.min_x, this.xavg_magnitude, false);
+        this.xavg_dist_magnitude = Math.round(Math.log10(xavg_dist));
+        this.xavg_dist_order = Math.pow(10, this.xavg_dist_magnitude);
+        this.frameXmax = round(this.max_x, this.xavg_dist_magnitude);
+        this.frameXmin = round(this.min_x, this.xavg_dist_magnitude, false);
     }
 
     // quick sort
-    sortPoitns() {
+    sortPoints() {
         pointsQuickSort(this.points, 0, this.points.length - 1);
     }
 
@@ -155,7 +166,7 @@ class Graph {
         ctx.strokeStyle = "rgb(180, 180, 180)";
 
         let nx = this.frameXmax - this.frameXmin;
-        nx = nx / this.xavg_order;
+        nx = nx / this.xavg_dist_order;
 
         let xmult = 1;
         if(nx > 10) {
@@ -172,19 +183,19 @@ class Graph {
 
         ctx.fillStyle = "rgb(150, 150, 150)";
 
-        if (this.xavg_magnitude >= 3) {
-            ctx.fillText("10^" + this.xavg_magnitude, this.posX + this.width, this.posY + this.height + 40);
+        if (this.xavg_dist_magnitude >= 3) {
+            ctx.fillText("10^" + this.xavg_dist_magnitude, this.posX + this.width, this.posY + this.height + 40);
         }
 
-        if (this.yavg_magnitude >= 3) {
-            ctx.fillText("10^" + this.yavg_magnitude, this.posX - 100, this.posY - 50);
+        if (this.yavg_dist_magnitude >= 3) {
+            ctx.fillText("10^" + this.yavg_dist_magnitude, this.posX - 100, this.posY - 50);
         }
 
         ctx.fillStyle = "rgb(0, 0, 0)";
 
         for(let i = 0; i <= nx; i+= xmult){
             let xpos = i * this.xTileWidth;
-            let label = this.frameXmin + i * this.xavg_order;
+            let label = this.frameXmin + i * this.xavg_dist_order;
 
             ctx.moveTo(this.posX + xpos, this.posY + this.height);
             ctx.lineTo(this.posX + xpos, this.posY);
@@ -192,8 +203,8 @@ class Graph {
 
             // tirar do for, criar dos loops separados
             // tirar o 3 hardcoded, permitir config
-            if (this.xavg_magnitude >= 3) {
-                label = label / this.xavg_order;
+            if (this.xavg_dist_magnitude >= 3) {
+                label = label / this.xavg_dist_order;
             }
 
             label = Number.parseFloat(label).toFixed(this.graphConfig.decimal);
@@ -203,7 +214,7 @@ class Graph {
         }
 
         let ny = this.frameYmax - this.frameYmin;
-        ny = ny / this.yavg_order;
+        ny = ny / this.yavg_dist_order;
 
         this.yTileWidth = this.height / ny;
 
@@ -220,14 +231,14 @@ class Graph {
 
         for(let i = 0; i <= ny; i+= ymult) {
             let ypos = i * this.yTileWidth;
-            let label = this.frameYmin + i * this.yavg_order;
+            let label = this.frameYmin + i * this.yavg_dist_order;
 
             ctx.moveTo(this.posX, this.posY + this.height - ypos);
             ctx.lineTo(this.posX + this.width, this.posY + this.height - ypos);
             ctx.stroke();
 
-            if (this.yavg_magnitude >= 3) {
-                label = label / this.yavg_order;
+            if (this.yavg_dist_magnitude >= 3) {
+                label = label / this.yavg_dist_order;
             }
 
             label = Number.parseFloat(label).toFixed(this.graphConfig.decimal);
@@ -252,6 +263,51 @@ class Graph {
             ctx.arc(cx + this.posX, this.height + this.posY - cy, 7, 0, 2 * Math.PI);
             ctx.fill();
         }
+    }
+
+    drawRegressionLine(ctx){
+        let line = regression(this.points, this.xavg, this.yavg);
+
+        ctx.strokeStyle = "rgb(250, 150, 150)";
+
+        let xrange = this.frameXmax - this.frameXmin;
+        let xpixelConv = this.width / xrange;
+
+        let yrange = this.frameYmax - this.frameYmin;
+        let ypixelConv = this.height / yrange;
+
+        let xm0 = (this.frameYmin - line[1])/line[0];
+        let xm1 = (this.frameYmax - line[1])/line[0]
+        
+        console.log("...");
+
+        console.log(xm0);
+        console.log(xm1);
+        console.log(xm0 <= this.frameXmin);
+        console.log(xm1 >= this.frameXmax);
+
+        console.log("...");
+
+        if(xm0 <= this.frameXmin){ 
+            let y0 = line[0] * this.frameXmin + line[1] - this.frameYmin;
+            ctx.moveTo(this.posX, this.posY + this.height - (y0 * ypixelConv) );
+        } else{
+            xm0 -= this.frameXmin;
+            ctx.moveTo(this.posX + (xm0 * xpixelConv), this.posY + this.height);
+        }
+
+        if(xm1 >= this.frameXmax) {
+            let y1 = line[0] * this.frameXmax + line[1] - this.frameYmin;
+            ctx.lineTo(this.posX + this.width, this.posY + this.height - (y1 * ypixelConv) );
+        } else {
+            xm1 -= this.frameXmin;
+            ctx.lineTo(this.posX + xm1 * xpixelConv, this.posY);
+        }
+        
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+        return line;
     }
 }
 

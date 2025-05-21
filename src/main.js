@@ -3,11 +3,12 @@ import { Canvas } from "./canvas.js"
 import { points00 } from "./testpoints.js"
 
 let graph = new Graph(150, 150, 1780, 1000);
-let canvas = new Canvas("cgraph", 2000, 1300, 0, 0, 2);
+let canvas = new Canvas("cgraph", 2000, 1400, 0, 0, 2);
 
 window.onload = () => {
     canvas.create();
-    graph.render(canvas.ctx);
+    let line = graph.render(canvas.ctx);
+    updateRegressionData(line);
 
     let arr = points00.slice();
     arr.unshift(["Eixo X","Eixo Y"]);
@@ -19,6 +20,8 @@ const table = document.getElementById("data-table");
 const input_title = document.getElementById("title");
 const input_xaxis = document.getElementById("xaxis");
 const input_yaxis = document.getElementById("yaxis");
+
+const regressionData = document.getElementById("regression-data");
 
 document.getElementById("savegraph").addEventListener("click", () => {
     let link = document.createElement('a');
@@ -66,9 +69,15 @@ document.getElementById("clipboard-paste").addEventListener("click", () => {
         input_xaxis.value = info.xlabel;
         input_yaxis.value = info.ylabel;
 
-        graph.update(canvas.ctx, graphpoints, info);
+        let line = graph.update(canvas.ctx, graphpoints, info);
+        updateRegressionData(line);
     })
 });
+
+function updateRegressionData(line){
+    regressionData.children[0].innerHTML = "<b>a:</b> " + line[0].toFixed(5);
+    regressionData.children[2].innerHTML = "<b>b:</b> " + line[1].toFixed(5);
+}
 
 function updateTable(arr){
     table.children[0].children[0].children[0].innerHTML = arr[0][0];
@@ -119,7 +128,8 @@ function closeConfiguration() {
         ylabel: input_yaxis.value,
     }
 
-    graph.update(canvas.ctx, null, info);
+    let line = graph.update(canvas.ctx, null, info);
+    updateRegressionData(line);
 
     config = false;
 }
