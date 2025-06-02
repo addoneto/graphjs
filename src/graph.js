@@ -8,7 +8,7 @@ class Graph {
         this.width = w;
         this.height = h
 
-        this.points = noiselinear;
+        this.points = points00;
 
         this.labelDecimals = 2;
 
@@ -47,15 +47,18 @@ class Graph {
 
         ctx.font = "30px CM";
 
+
         this.drawGrid(ctx);
 
         this.drawAxis(ctx);
 
         ctx.fillStyle = "rgb(0, 0, 0)";
 
+        let line = this.drawRegressionLine(ctx);
+
         this.drawPoints(ctx);
 
-        return this.drawRegressionLine(ctx);
+        return line;
     }
 
     drawAxis(ctx) {
@@ -162,6 +165,8 @@ class Graph {
     }
 
     drawGrid(ctx){
+        ctx.beginPath();
+
         ctx.lineWidth = 1;
         ctx.strokeStyle = "rgb(180, 180, 180)";
 
@@ -263,9 +268,12 @@ class Graph {
             ctx.arc(cx + this.posX, this.height + this.posY - cy, 7, 0, 2 * Math.PI);
             ctx.fill();
         }
+
+        // ctx.closePath();
     }
 
     drawRegressionLine(ctx){
+        ctx.beginPath();
         let line = regression(this.points, this.xavg, this.yavg);
 
         ctx.strokeStyle = "rgb(250, 150, 150)";
@@ -307,6 +315,7 @@ class Graph {
         ctx.stroke();
 
         ctx.strokeStyle = "rgb(0, 0, 0)";
+        ctx.closePath();
         return line;
     }
 }

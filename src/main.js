@@ -3,7 +3,7 @@ import { Canvas } from "./canvas.js"
 import { points00 } from "./testpoints.js"
 
 let graph = new Graph(150, 150, 1780, 1000);
-let canvas = new Canvas("cgraph", 2000, 1400, 0, 0, 2);
+let canvas = new Canvas("cgraph", 2000, 1300, 0, 0, 2);
 
 window.onload = () => {
     canvas.create();
@@ -121,6 +121,9 @@ window.addEventListener("keypress", function(e) {
 function closeConfiguration() {
     
     document.getElementById("config-panel").style.display = "none";
+
+    table.children[0].children[0].children[0].innerHTML = input_xaxis.value;
+    table.children[0].children[0].children[1].innerHTML = input_yaxis.value;
 
     let info = {
         title: input_title.value,
