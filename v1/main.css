@@ -1,0 +1,256 @@
+body {
+    margin: 0;
+    background-color: rgb(18, 18, 19);
+    font-family: "Darker Grotesque", sans-serif;
+    color: rgb(246, 244, 240);
+}
+header {
+    width: 100vw;
+    height: 60px;
+    display:flex;
+    align-items: center;
+
+    padding: 0 40px;
+    user-select: none;
+
+    svg {
+        display: inline-block;
+        vertical-align: middle;
+        width: 25px;
+        stroke-width: 1px;
+        stroke:rgb(246, 244, 240);
+    }
+
+    h1 {
+        display: inline-block;
+        vertical-align: middle;
+        font-weight: 300;
+        margin: -5px 0 0 0;
+        
+    }
+}
+
+.graph-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.graph-header h2 {
+    /* margin-top: -10px; */
+    margin:-5px 0 0 0 ;
+    font-weight: 400;
+}
+
+.set-container button{
+    width: 100%;
+    border: 0;
+    background-color: transparent;
+    color: rgb(246, 244, 240);
+    font-family: "Darker Grotesque";
+    text-align: left;
+    /* vertical-align: middle; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    margin: 10px 0;
+}
+
+.set-container button svg {
+    width: 20px;
+    vertical-align: middle;
+}
+
+.set-container button span {
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.graph-header button{
+background-color: transparent;
+border: 0;
+
+}
+
+.graph-header button svg{
+    width: 25px;
+    stroke: rgb(246, 244, 240);
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    position: fixed;
+    left: 0;
+    top: 100px;
+}
+
+.btn-container {
+    position: relative;
+}
+
+.tooltip {
+    font-size: 15px;
+    background-color: rgba(116, 116, 116, 0.127);
+    border-radius: 5px;
+    padding: 2px 10px 5px 10px;
+    position: absolute;
+    visibility: hidden;
+    transition: opacity 1s;
+}
+
+.btn-container:hover .tooltip{
+    visibility: visible;
+}
+
+.nav-btn {
+    background-color: rgb(30, 30, 31);
+    width: 55px;
+    height: 35px;
+    /* height: 30; */
+    transform: translateX(-5px);
+    /* padding-left: 20px; */
+    /* padding: 5px 5px 5px 40px;
+     */
+     position: relative;
+    transition: .5s;
+    border: 1px solid rgb(43, 43, 44);
+    border-radius: 0 5px 5px 0;
+}
+
+.nav-btn:hover{
+    transform: translateX(-1px);
+    cursor: pointer;
+}
+
+.nav-btn:hover svg{
+    stroke:rgb(94, 83, 218);
+    filter: drop-shadow(0px 0px 2px #863d96);
+}
+
+.nav-btn svg {
+    height: 75%;
+    stroke-width: 1px;
+    stroke:rgb(246, 244, 240);
+    transition: 1s;
+    fill: none;
+    position: absolute;
+    right: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* margin-bottom: -3px; */
+}
+
+.nav-btn:active{
+    transform: translateX(-3px);
+}
+
+.nav-btn:active svg{
+    stroke:rgb(136, 128, 226);
+    filter: none;
+}
+
+main {
+    padding: 0 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.graph-container {
+    width: 100%;
+    height: 650px;
+    background-color: rgb(30, 30, 31);
+    border: 1px solid rgb(43, 43, 44);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+
+    display: flex;
+    gap: 10px;
+}
+.graph-aside-container{
+    width: 250px;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
+.set-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.content {
+    width: 100%;
+    height: 500px;
+}
+
+.set-container h3{
+    font-weight: 500;
+    font-size: 20px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.graph-view {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(203, 203, 203);
+    border-radius: 5px;
+}
+
+.datasets {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    /* max-height: 100%; */
+    /* flex-grow: 1; */
+    height: 450px;
+    gap: 10px;
+}
+
+hr{
+    border: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgb(114, 114, 114);
+    border-radius: 2px;
+}
+
+.dataset {
+    width: 100%;
+    background-color: rgb(18, 18, 19);
+    /* height: 200px; */
+    max-height: 400px;
+    overflow: scroll;
+    border-radius: 5px;
+}
+
+footer {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(162, 159, 159);
+}
+.dataset {
+    box-sizing: border-box;
+    padding: 15px;
+}
+.dataset table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dataset table tbody tr td {
+    text-align: center;
+}
+
+.dataset table tbody tr:nth-child(even) {
+    background-color: rgba(58, 58, 58, 0.254);
+}

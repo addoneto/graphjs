@@ -1,0 +1,18 @@
+- [ ] criar gráfico
+ -> adicionar conjunto de dados (data set)
+ -> configurações
+    - resolução do gráifico
+    - tamanho da fonte do título
+    - tamanho da fonte dos eixos
+    - tamanho da fonte da grid
+    - color da grid
+    - cor dos eixos
+    - cor dos textos
+    - cor do fundo
+    - maximo de algarismos em x
+    - maximo de algarismos em y
+    - maximo de divisoes na grid em x
+    - maximo de divisoes na grid em y
+ -> regressão: fazer mais de uma regressão 
+
+- [ ] criar histograma

@@ -1,4 +1,4 @@
-import { points00, points01, points02,linear, noiselinear, quadratic, log, exp, horizontal, vertical } from "./testpoints.js";
+import { points00, points01, points02,linear, noiselinear, quadratic, log, exp, horizontal, vertical, points_exp} from "./testpoints.js";
 import regression from "./regression.js";
 
 class Graph {
@@ -8,7 +8,7 @@ class Graph {
         this.width = w;
         this.height = h
 
-        this.points = points00;
+        this.points = points_exp;
 
         this.labelDecimals = 2;
 

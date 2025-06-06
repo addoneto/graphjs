@@ -93,4 +93,29 @@ let vertical = [
   [3, 5]
 ];
 
-export { points00, points01, points02,linear, noiselinear, quadratic, log, exp, horizontal, vertical};
+const points_exp = [
+    [0, 1],
+    [1, 2.71828182846],
+    [2, 7.38905609893],
+    [3, 20.0855369232],
+    [4, 54.5981500331],
+    [5, 148.413159103],
+    [6, 403.428793493],
+    [0, 2.5],
+    [0.5, 1.625],
+    [1, 1],
+    [1.5, 0.625],
+    [2, 0.5],
+    [2.5, 0.625],
+    [3, 1],
+    [3.5, 1.625],
+    [4, 2.5],
+    [4.5, 3.625],
+    [5, 5],
+    [6, 8.5],
+    [7, 13],
+    [8, 18.5],
+    [10, 32.5]
+];
+
+export { points00, points01, points02,linear, noiselinear, quadratic, log, exp, horizontal, vertical, points_exp};
