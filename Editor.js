@@ -41,16 +41,10 @@ let html = `
                             </svg>
                         </button>
 
-                        <div class="data-set-hold">
-                            <button class="clipboard-btn">
-                                <svg data-slot="icon" fill="none" stroke-width="1" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z">
-                                    </path>
-                                </svg>
-                            </button>
+                        <div class="data-set-wrapper"> 
+
                         </div>
+
                     </div>
 
                     <div class="fit-curves-container">
@@ -177,6 +171,9 @@ export default class Editor {
 
         this.primary_editor = null;
         this.settings_editor = null;
+        this.data_set_container = null;
+
+        this.data_sets = [];
 
         this.create(parent, n);
     }
@@ -198,9 +195,159 @@ export default class Editor {
         this.primary_editor = document.getElementById(`primary-editor-${n}`);
         this.settings_editor = document.getElementById(`settings-editor-${n}`);
         this.settings_btn.addEventListener("click", () => { Editor.toggleSettings(this) });
+
+        this.data_set_container = this.primary_editor.children[0];
+
+        Editor.createDataSet(this);
+
+        this.data_set_container.getElementsByClassName("add-btn")[0].addEventListener("click", () => {
+            Editor.createDataSet(this);
+        });
     }
 
-    static toggleSettings(editor){
+    static createDataSet(editor) {
+        let data_set_div = document.createElement("div");
+        data_set_div.classList.add("data-set");
+        editor.data_set_container.getElementsByClassName("data-set-wrapper")[0].appendChild(data_set_div);
+
+        let data_div = document.createElement("div");
+        data_set_div.appendChild(data_div);
+
+        let clipboard_btn = document.createElement("button");
+        clipboard_btn.classList.add("clipboard-btn");
+
+        data_div.appendChild(clipboard_btn);
+        clipboard_btn.innerHTML += `
+                                <svg data-slot="icon" fill="none" stroke-width="1" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z">
+                                    </path>
+                                </svg>`;
+
+        let config_btn = document.createElement("button");
+        config_btn.classList.add("dataset-config-btn");
+        data_set_div.appendChild(config_btn);
+
+        config_btn.innerHTML = `
+        <svg data-slot="icon" fill="none" stroke-width="1" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                            </svg>
+                            <svg class="none" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>`;
+
+        let settings_div = document.createElement("div");
+        settings_div.classList.add("none");
+        settings_div.classList.add("dataset-settings")
+        data_set_div.appendChild(settings_div);
+
+        settings_div.innerHTML = `
+            <div class="config-wrapper">
+                <label>Cor dos Pontos</label>
+                <input type="color">
+            </div>
+
+            <div class="config-wrapper">
+                <label>Tamanho dos Pontos</label>
+                <input type="number" value="7">
+                <label class="unit">[px]</label>
+            </div>
+        `;
+
+        editor.data_sets.push({
+            div: data_set_div,
+            clipboard_btn: clipboard_btn,
+            settings_panel: false,
+            table: null,
+            data_div: data_div,
+            settings_div: settings_div,
+            settings_btn: config_btn,
+        });
+
+        let id = editor.data_sets.length - 1;
+        editor.graph.createDataSet();
+
+        clipboard_btn.addEventListener("click", () => {
+            Editor.pasteDataSet(editor.data_sets[id], editor, id);
+        });
+
+        config_btn.addEventListener("click", () => {
+            Editor.openDatasetSettings(editor.data_sets[id], editor, id);
+        });
+    }
+
+    static pasteDataSet(data_set, editor, id) {
+        let table = document.createElement("table");
+        data_set.data_div.appendChild(table);
+
+        data_set.table = table;
+        
+        let thead = document.createElement("thead");
+        table.appendChild(thead);
+
+        let htr = document.createElement("tr");
+        thead.appendChild(htr);
+
+        let xaxis = document.createElement("th");
+        xaxis.innerHTML = "Eixo X";
+        htr.appendChild(xaxis);
+
+        let yaxis = document.createElement("th");
+        yaxis.innerHTML = "Eixo Y";
+        htr.appendChild(yaxis);
+
+        let tbody = document.createElement("tbody");
+        table.appendChild(tbody);
+
+        let points = [];
+
+        navigator.clipboard.readText().then(clipboard_txt => {
+            // console.log(clipboard_txt);
+
+            let rows = clipboard_txt.split("\n");
+            rows.forEach(row => {
+                let point = row.split("\t");
+                point[0] = parseFloat(point[0].replace(",", "."));
+                point[1] = parseFloat(point[1].replace(",", "."));
+                points.push(point);
+            
+                let tr = document.createElement("tr");
+                tbody.appendChild(tr);
+
+                let x = document.createElement("td");
+                x.setAttribute("contenteditable", "true");
+                x.innerHTML = point[0];
+                tr.appendChild(x);
+
+                let y = document.createElement("td");
+                y.setAttribute("contenteditable", "true");
+                y.innerHTML = point[1];
+                tr.appendChild(y);
+            });
+
+            // console.log(points);
+            data_set.clipboard_btn.classList.add("none");
+            editor.graph.updateDataSet(id, points);
+        });
+        
+    }
+
+    static openDatasetSettings(data_set, editor, id) {
+        data_set.data_div.classList.toggle("none");
+        data_set.settings_div.classList.toggle("none");
+        data_set.settings_panel = !data_set.settings_panel;
+
+        data_set.settings_btn.children[0].classList.toggle("none");
+        data_set.settings_btn.children[1].classList.toggle("none");
+    }
+
+    static toggleSettings(editor) {
         editor.showing_settings = !editor.showing_settings;
         editor.settings_btn.children[0].classList.toggle("none");
         editor.settings_btn.children[1].classList.toggle("none");

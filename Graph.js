@@ -1,4 +1,5 @@
 import { exp, quadratic, senoic, mov } from "./test-datasets.js";
+import Dataset from "./Dataset.js";
 
 let debug_mode = true;
 
@@ -11,9 +12,7 @@ export default class Graph {
         this.graph_height = 900;
 
         this.totalpoints = [];
-        this.data_sets = [
-            mov
-        ];
+        this.data_sets = [];
         this.fit_curves = [];
 
         this.avg_x_dist = 0;
@@ -90,30 +89,36 @@ export default class Graph {
         }
     }
 
-    render(ctx) {
-        this.ctx = ctx;
+    render(ctx = null) {
+        if (!this.ctx) this.ctx = ctx;
 
         this.ctx.fillStyle = this.config.bg_color;
         this.ctx.fillRect(0, 0, this.img_width, this.img_height);
 
-        this.updateTotalPoints();
-        this.sortTotalPoints();
-        this.getFrameBoundaries();
-
         this.drawAxis();
         this.drawTitle();
-
-        this.drawGridLines();
-        this.drawGridCoordinates();
         this.drawLabels();
+
+        this.updateTotalPoints();
+
+        this.sortTotalPoints();
+
+        if(this.totalpoints.length === 0) return;
+        
+        this.getFrameBoundaries();
+        this.drawGridCoordinates();
+        this.drawGridLines();
 
         this.drawFitLines();
         this.drawDataSets();
     }
 
     updateTotalPoints() {
+        // console.log("update total points")
         this.totalpoints = [];
         this.data_sets.forEach(data_set => {
+            // console.log("data set loop");
+            console.log(data_set.points);
             this.totalpoints = this.totalpoints.concat(data_set.points);
         });
     }
@@ -357,6 +362,17 @@ export default class Graph {
                 this.ctx.fill();
             });
         });
+    }
+
+    createDataSet() {
+        this.data_sets.push(new Dataset());
+        console.log("Create Data Set");
+    }
+
+    updateDataSet(id, points) {
+        this.data_sets[id].update(points);
+
+        this.render();
     }
 }
 
