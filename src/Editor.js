@@ -280,6 +280,12 @@ export default class Editor {
         config_btn.addEventListener("click", () => {
             Editor.openDatasetSettings(editor.data_sets[id], editor, id);
         });
+
+        for(let input of settings_div.getElementsByTagName("input")) {
+            input.addEventListener("change", () => {
+                Editor.updateDatasetSettings(editor.data_sets[id], editor, id);
+            });
+        }
     }
 
     static pasteDataSet(data_set, editor, id) {
@@ -345,6 +351,14 @@ export default class Editor {
 
         data_set.settings_btn.children[0].classList.toggle("none");
         data_set.settings_btn.children[1].classList.toggle("none");
+    }
+
+    static updateDatasetSettings(data_set, editor, id) {
+        let settings = {
+            points_color: data_set.settings_div.getElementsByTagName("input")[0].value,
+            points_size: Number(data_set.settings_div.getElementsByTagName("input")[1].value),
+        };
+        editor.graph.updateDatasetSettings(id, settings);
     }
 
     static toggleSettings(editor) {

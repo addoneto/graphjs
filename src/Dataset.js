@@ -15,4 +15,9 @@ export default class Dataset {
     update(points) {
         this.points = points;
     }
+
+    setSettings(settings) {
+        this.points_color = settings.points_color;
+        this.points_size = settings.points_size;
+    }
 }

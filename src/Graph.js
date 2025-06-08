@@ -371,7 +371,11 @@ export default class Graph {
 
     updateDataSet(id, points) {
         this.data_sets[id].update(points);
+        this.render();
+    }
 
+    updateDatasetSettings(id, settings) {
+        this.data_sets[id].setSettings(settings);
         this.render();
     }
 }
