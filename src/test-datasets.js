@@ -74,9 +74,22 @@ const points_mov = [
     [67.3, 450.33]
 ];
 
+let dpoints = [
+    [20050, 10],
+    [17720,	9],
+    [14810,	7.4],
+    [8593,	4.1],
+    [5166,	2.5],
+    [2936,	1.5],
+    [1710,	0.9],
+    [716.3,	0.4]
+]
+
 const exp = new Dataset(points_exp, "#db4646");
 const quadratic = new Dataset(points_quadratic, "#4693db");
 const senoic = new Dataset(points_senoic, "#32a852");
 const mov = new Dataset(points_mov, "#8922c9");
 
-export {exp, quadratic, senoic, mov}
+const density = new Dataset(dpoints, "#8922c9");
+
+export {exp, quadratic, senoic, mov, density}

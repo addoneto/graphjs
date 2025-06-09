@@ -467,6 +467,23 @@ export default class Editor {
     }
 
     static pasteDataSet(data_set, editor, id) {
+        navigator.clipboard.readText().then(clipboard_txt => {
+            let points = [];
+
+            let rows = clipboard_txt.split("\n");
+            rows.forEach(row => {
+                let point = row.split("\t");
+                point[0] = parseFloat(point[0].replace(",", "."));
+                point[1] = parseFloat(point[1].replace(",", "."));
+                points.push(point);
+            });
+
+            Editor.updateDataSet(data_set, editor, id, points);
+        });
+
+    }
+
+    static updateDataSet(data_set, editor, id, data) {
         let table = document.createElement("table");
         data_set.data_div.appendChild(table);
 
@@ -489,37 +506,23 @@ export default class Editor {
         let tbody = document.createElement("tbody");
         table.appendChild(tbody);
 
-        let points = [];
+        data.forEach(point => {
+            let tr = document.createElement("tr");
+            tbody.appendChild(tr);
 
-        navigator.clipboard.readText().then(clipboard_txt => {
-            // console.log(clipboard_txt);
+            let x = document.createElement("td");
+            x.setAttribute("contenteditable", "true");
+            x.innerHTML = point[0];
+            tr.appendChild(x);
 
-            let rows = clipboard_txt.split("\n");
-            rows.forEach(row => {
-                let point = row.split("\t");
-                point[0] = parseFloat(point[0].replace(",", "."));
-                point[1] = parseFloat(point[1].replace(",", "."));
-                points.push(point);
-
-                let tr = document.createElement("tr");
-                tbody.appendChild(tr);
-
-                let x = document.createElement("td");
-                x.setAttribute("contenteditable", "true");
-                x.innerHTML = point[0];
-                tr.appendChild(x);
-
-                let y = document.createElement("td");
-                y.setAttribute("contenteditable", "true");
-                y.innerHTML = point[1];
-                tr.appendChild(y);
-            });
-
-            // console.log(points);
-            data_set.clipboard_btn.classList.add("none");
-            editor.graph.updateDataSet(id, points);
+            let y = document.createElement("td");
+            y.setAttribute("contenteditable", "true");
+            y.innerHTML = point[1];
+            tr.appendChild(y);
         });
 
+        data_set.clipboard_btn.classList.add("none");
+        editor.graph.updateDataSet(id, data);
     }
 
     static openDatasetSettings(data_set, editor, id) {

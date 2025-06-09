@@ -8,10 +8,12 @@ const main = document.getElementsByTagName("main")[0];
 create_graph_btn.addEventListener("click", createNewGraph);
 let editors = [];
 
-function createNewGraph() {
+export function createNewGraph() {
     ngraph += 1;
 
-    editors.push(new Editor(main, ngraph));
+    let n =  new Editor(main, ngraph);
+    editors.push(n);
+    return n;
 }
 
 window.addEventListener("resize", () => {
@@ -19,3 +21,7 @@ window.addEventListener("resize", () => {
         editor.resize();
     });
 });
+
+export function updateDataSet(data_set, editor, id, data){
+    Editor.updateDataSet(data_set, editor, id, data);
+}
