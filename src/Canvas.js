@@ -14,11 +14,31 @@ export default class Canvas {
 
     create() {
         this.el = document.createElement("canvas");
+
         this.el.width = this.res_x;
         this.el.height = this.res_y;
         this.el.style.width = this.width + "px";
         this.el.style.height = this.height + "px";
+
         this.ctx = this.el.getContext("2d");
         this.parent.appendChild(this.el);
+    }
+
+    resize(img_width, img_height, container_width, container_height){
+        this.res_x = img_width;
+        this.res_y = img_height;
+
+        this.height = container_height;
+            this.width = container_height * (img_width / img_height);
+
+        if(this.width > img_width / this.pixel_density || this.height > img_height / this.pixel_density) {
+            this.width = img_width / this.pixel_density;
+            this.height = img_height / this.pixel_density;
+        }
+
+        this.el.width = this.res_x;
+        this.el.height = this.res_y;
+        this.el.style.width = this.width + "px";
+        this.el.style.height = this.height + "px";
     }
 }

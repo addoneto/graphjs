@@ -61,95 +61,143 @@ let html = `
                 <div class="settings-editor none" id="settings-editor-{}">
                     <h3>Título</h3>
                     <div class="config-wrapper">
-                        <input type="text" value="Título do Gráfico">
+                        <input type="text" id="title-txt-{}" value="Título do Gráfico">
                     </div>
                     
                     <div class="config-wrapper">
                         <label>Cor do texto</label>
-                        <input type="color">
+                        <input id="title-font_color-{}" type="color">
                     </div>
 
                     <div class="config-wrapper">
                         <label>Tamanho do texto</label>
-                        <input type="number" value="50">
+                        <input id="title-font_size-{}" type="number" value="50">
                         <label class="unit">[px]</label>
                     </div>
 
                     <div class="config-wrapper">
                         <label>Margem inferior</label>
-                        <input type="number" value="30">
+                        <input id="title-margin-{}" type="number" value="30">
                         <label class="unit">[px]</label>
                     </div>
 
                     <h3>Eixos</h3>
                     <div class="config-wrapper">
                         <label>Eixo X</label>
-                        <input type="text" value="Eixo X">
+                        <input id="labels-x_txt-{}" type="text" value="Eixo X">
                     </div>
 
                     <div class="config-wrapper">
                         <label>Eixo Y</label>
-                        <input type="text" value="Eixo Y">
+                        <input id="labels-y_txt-{}" type="text" value="Eixo Y">
                     </div>
 
                     <div class="config-wrapper">
                         <label>Tamanho do texto</label>
-                        <input type="number" value="25">
+                        <input id="labels-font_size-{}" type="number" value="25">
                         <label class="unit">[px]</label>
                     </div>
 
                     <div class="config-wrapper">
+                        <label>Cor do texto</label>
+                        <input id="labels-font_color-{}" type="color">
+                    </div>
+
+                    <div class="config-wrapper">
                         <label>Margem superior</label>
-                        <input type="number" value="35">
+                        <input id="labels-margin_top-{}" type="number" value="35">
                         <label class="unit">[px]</label>
                     </div>
 
                     <div class="config-wrapper">
                         <label>Margem lateral</label>
-                        <input type="number" value="35">
+                        <input id="labels-margin_right-{}" type="number" value="35">
                         <label class="unit">[px]</label>
                     </div>
 
                     <h3>Dimensões</h3>
                     <div class="config-wrapper">
                         <label>Tamanho da Imagem</label><br>
-                        <input type="number" value="2000">
+                        <input id="_-img_width-{}" type="number" value="2000">
                         <label>x</label>
-                        <input type="number" value="1150">
+                        <input id="_-img_height-{}" type="number" value="1150">
+                        <label class="unit">[px]</label>
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Tamanho do Gráfico</label><br>
+                        <input id="_-graph_width-{}" type="number" value="2000">
+                        <label>x</label>
+                        <input id="_-graph_height-{}" type="number" value="1150">
                         <label class="unit">[px]</label>
                     </div>
 
                     <h3>Geral</h3>
                     <div class="config-wrapper">
                         <label>Cor de fundo</label>
-                        <input type="color"> <br>
+                        <input id="config-bg_color-{}" type="color"> <br>
                     </div>
 
                     <div class="config-wrapper">
                         <label>Cor dos eixos</label>
-                        <input type="color"> <br>
+                        <input id="axis-color-{}" type="color"> <br>
                     </div>
 
                     <div class="config-wrapper">
-                        <label>Cor da grade</label>
-                        <input type="color"> <br>
+                        <label>Tamanho da linha dos Eixos</label>
+                        <input id="axis-line_width-{}" type="number" value="2">
+                        <label class="unit">[px]</label>
                     </div>
 
+                    <h3>Grade</h3>
+
+                    <div class="config-wrapper">
+                        <label>Cor da grade</label>
+                        <input id="grid-color-{}" type="color"> <br>
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Tamanho da linha da Grade</label>
+                        <input id="grid-line_width-{}" type="number" value="2">
+                        <label class="unit">[px]</label>
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Máximo de Divosões em X</label>
+                        <input id="_-max_grid_x-{}" type="number" value="35">
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Máximo de Divosões em Y</label>
+                        <input id="_-max_grid_y-{}" type="number" value="35">
+                    </div>
 
                     <h3>Coordenadas</h3>
                     <div class="config-wrapper">
                         <label>Casas decimais</label>
-                        <input type="number" value="2">
+                        <input id="coordinates-decimals-{}" type="number" value="2">
                     </div>
 
                     <div class="config-wrapper">
                         <label>Cor do texto</label>
-                        <input type="color"> <br>
+                        <input id="coordinates-font_color-{}" type="color"> <br>
                     </div>
 
                     <div class="config-wrapper">
                         <label>Tamanho do texto</label>
-                        <input type="number" value="25">
+                        <input id="coordinates-font_size-{}" type="number" value="25">
+                        <label class="unit">[px]</label>
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Margem inferior</label>
+                        <input id="coordinates-margin_bottom-{}" type="number" value="25">
+                        <label class="unit">[px]</label>
+                    </div>
+
+                    <div class="config-wrapper">
+                        <label>Margem lateral</label>
+                        <input id="coordinates-margin_right-{}" type="number" value="25">
                         <label class="unit">[px]</label>
                     </div>
 
@@ -166,14 +214,57 @@ export default class Editor {
         this.showing_settings = false;
         this.id = n;
         this.settings_btn = null;
+        this.element = null;
 
         this.canvas = null;
 
         this.primary_editor = null;
         this.settings_editor = null;
         this.data_set_container = null;
+        this.canvas_contaner = null;
 
         this.data_sets = [];
+
+        this.settings_inputs = {
+            img_width: null,
+            img_height: null,
+            graph_width: null,
+            graph_height: null,
+            max_grid_x: null,
+            max_grid_y: null,
+            config: {
+                bg_color: null,
+                title: {
+                    txt: null,
+                    font_size: null,
+                    font_color: null,
+                    margin: null
+                },
+                labels: {
+                    x_txt: null,
+                    y_txt: null,
+                    font_size: null,
+                    font_color: null,
+                    margin_top: null,
+                    margin_right: null
+                },
+                coordinates: {
+                    font_size: null,
+                    font_color: null,
+                    decimals: null,
+                    margin_bottom: null,
+                    margin_right: null
+                },
+                axis: {
+                    color: null,
+                    line_width: null
+                },
+                grid: {
+                    color: null,
+                    line_width: null
+                }
+            }
+        };
 
         this.create(parent, n);
     }
@@ -185,11 +276,9 @@ export default class Editor {
         section_wrapper.innerHTML += html.replace(/\{\}/g, n.toString());
         parent.appendChild(section_wrapper);
 
-        let canvas_container = document.getElementById(`graph-container-${n}`);
-        this.canvas = new Canvas(canvas_container, 2000, 1150, 2);
-        this.graph = new Graph();
+        this.element = section_wrapper.children[0];
 
-        this.graph.render(this.canvas.ctx);
+        this.canvas_contaner = document.getElementById(`graph-container-${n}`);
 
         this.settings_btn = document.getElementById(`settings-btn-${n}`);
         this.primary_editor = document.getElementById(`primary-editor-${n}`);
@@ -198,11 +287,100 @@ export default class Editor {
 
         this.data_set_container = this.primary_editor.children[0];
 
-        Editor.createDataSet(this);
-
         this.data_set_container.getElementsByClassName("add-btn")[0].addEventListener("click", () => {
             Editor.createDataSet(this);
         });
+
+        let input_wrappers = this.settings_editor.getElementsByClassName("config-wrapper");
+        for (let div of input_wrappers) {
+            let inputs = div.getElementsByTagName("input");
+            for (let input of inputs) {
+                input.addEventListener("change", () => {
+                    Editor.updateGraphSettings(this, n);
+                });
+            }
+        }
+
+        this.getSettingsInputs(n);
+
+        this.canvas = new Canvas(this.canvas_contaner, 2000, 1150, 1);
+        this.graph = new Graph(this.canvas, this);
+
+        this.resize();
+
+        Editor.createDataSet(this);
+    }
+
+    getSettingsInputs(n) {
+        let stack = [{
+            parent: "_",
+            obj: this.settings_inputs,
+            keys: Object.keys(this.settings_inputs)
+        }];
+
+        while (stack.length > 0) {
+            let current = stack[stack.length - 1];
+
+            if (current.keys.length === 0) {
+                stack.pop(); // terminou este objeto
+                continue;
+            }
+
+            let key = current.keys.shift();
+            let value = current.obj[key];
+
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                stack.push({
+                    parent: key,
+                    obj: value,
+                    keys: Object.keys(value)
+                });
+            } else {
+                current.obj[key] = document.getElementById(`${current.parent}-${key}-${n}`);
+            }
+        }
+
+        console.log(this.settings_inputs);
+    }
+
+    // checar código
+    updateSettingsInputs(data) {
+        console.log(data);
+        let stack = [{
+            objInput: this.settings_inputs,
+            objData: data
+        }];
+
+        while (stack.length > 0) {
+            let { objInput, objData } = stack.pop();
+
+            for (let key in objInput) {
+                const valInput = objInput[key];
+
+                // Garante que objData é objeto antes de usar 'in'
+                if (
+                    typeof objData !== 'object' ||
+                    objData === null ||
+                    !(key in objData)
+                ) continue;
+
+                const valData = objData[key];
+
+                if (
+                    typeof valInput === 'object' && valInput !== null &&
+                    typeof valData === 'object' && valData !== null &&
+                    !Array.isArray(valInput) && !Array.isArray(valData)
+                ) {
+                    stack.push({
+                        objInput: valInput,
+                        objData: valData
+                    });
+                } else {
+                    valInput.value = valData;
+                }
+            }
+
+        }
     }
 
     static createDataSet(editor) {
@@ -281,7 +459,7 @@ export default class Editor {
             Editor.openDatasetSettings(editor.data_sets[id], editor, id);
         });
 
-        for(let input of settings_div.getElementsByTagName("input")) {
+        for (let input of settings_div.getElementsByTagName("input")) {
             input.addEventListener("change", () => {
                 Editor.updateDatasetSettings(editor.data_sets[id], editor, id);
             });
@@ -293,7 +471,7 @@ export default class Editor {
         data_set.data_div.appendChild(table);
 
         data_set.table = table;
-        
+
         let thead = document.createElement("thead");
         table.appendChild(thead);
 
@@ -322,7 +500,7 @@ export default class Editor {
                 point[0] = parseFloat(point[0].replace(",", "."));
                 point[1] = parseFloat(point[1].replace(",", "."));
                 points.push(point);
-            
+
                 let tr = document.createElement("tr");
                 tbody.appendChild(tr);
 
@@ -341,7 +519,7 @@ export default class Editor {
             data_set.clipboard_btn.classList.add("none");
             editor.graph.updateDataSet(id, points);
         });
-        
+
     }
 
     static openDatasetSettings(data_set, editor, id) {
@@ -368,5 +546,50 @@ export default class Editor {
         editor.settings_editor.classList.toggle("none");
         editor.primary_editor.classList.toggle("none");
         // console.log(editor.id);
+    }
+
+    resize() {
+        let p = this.canvas_contaner.getBoundingClientRect();
+        let width = p.right - p.left;
+        let height = p.bottom - p.y;
+        this.graph.resize(width, height);
+    }
+
+    static updateGraphSettings(editor, id) {
+        let stack = [{
+            inputNode: editor.settings_inputs,
+            outputNode: {}
+        }];
+
+        const settings = stack[0].outputNode;
+
+        while (stack.length > 0) {
+            const { inputNode, outputNode } = stack.pop();
+
+            for (let key in inputNode) {
+                const val = inputNode[key];
+
+                if (
+                    typeof val === 'object' &&
+                    val !== null &&
+                    !Array.isArray(val)
+                ) {
+                    // Se tiver .value, considera um input real
+                    if ('value' in val) {
+                        outputNode[key] = val.value;
+                    } else {
+                        // Caso contrário, é um objeto aninhado
+                        outputNode[key] = {};
+                        stack.push({
+                            inputNode: val,
+                            outputNode: outputNode[key]
+                        });
+                    }
+                }
+            }
+        }
+
+        editor.graph.updateSettings(settings);
+        editor.resize();
     }
 }

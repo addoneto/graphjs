@@ -13,3 +13,9 @@ function createNewGraph() {
 
     editors.push(new Editor(main, ngraph));
 }
+
+window.addEventListener("resize", () => {
+    editors.forEach(editor => {
+        editor.resize();
+    });
+});

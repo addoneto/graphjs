@@ -1,0 +1,43 @@
+{
+    "img_width": 2000,
+    "img_height": 1150,
+    "graph_width": 1700,
+    "graph_height": 900,
+    "max_grid_x": 10,
+    "max_grid_y": 10,
+    "config": {
+        "bg_color": "#ffffff",
+        "title": {
+                "txt": "Título do Gráfico",
+                "font": "Computer-Modern-Bold",
+                "font_size": 50,
+                "font_color": "#000000",
+                "margin": 20
+            },
+            "labels": {
+                "x_txt": "Eixo X",
+                "y_txt": "Eixo Y",
+                "font": "Computer-Modern",
+                "font_size": 40,
+                "font_color": "#000000",
+                "margin_top": 40,
+                "margin_right": 90
+            },
+            "coordinates": {
+                "font": "Computer-Modern",
+                "font_size": 30,
+                "font_color": "#000000",
+                "decimals": 2,
+                "margin_bottom": 30,
+                "margin_right": 10
+            },
+            "axis": {
+                "color": "#000000",
+                "line_width": 2
+            },
+            "grid": {
+                "color": "#cccccc",
+                "line_width": 1
+            }
+    }
+}

@@ -3,8 +3,10 @@ import Dataset from "./Dataset.js";
 
 let debug_mode = true;
 
+const defjson = new Request("src/default-graph.json");
+
 export default class Graph {
-    constructor() {
+    constructor(canvas, editor) {
         this.img_width = 2000;
         this.img_height = 1150;
 
@@ -50,7 +52,8 @@ export default class Graph {
             bottom: 0
         }
 
-        this.ctx = null;
+        this.canvas = canvas;
+        this.ctx = canvas.ctx;
 
         this.config = {
             bg_color: "#ffffff",
@@ -87,10 +90,12 @@ export default class Graph {
                 line_width: 1,
             }
         }
+
+        this.setSettings(editor);
     }
 
-    render(ctx = null) {
-        if (!this.ctx) this.ctx = ctx;
+    render() {
+        // if (!this.ctx) this.ctx = ctx;
 
         this.ctx.fillStyle = this.config.bg_color;
         this.ctx.fillRect(0, 0, this.img_width, this.img_height);
@@ -114,11 +119,8 @@ export default class Graph {
     }
 
     updateTotalPoints() {
-        // console.log("update total points")
         this.totalpoints = [];
         this.data_sets.forEach(data_set => {
-            // console.log("data set loop");
-            console.log(data_set.points);
             this.totalpoints = this.totalpoints.concat(data_set.points);
         });
     }
@@ -366,7 +368,6 @@ export default class Graph {
 
     createDataSet() {
         this.data_sets.push(new Dataset());
-        console.log("Create Data Set");
     }
 
     updateDataSet(id, points) {
@@ -377,6 +378,36 @@ export default class Graph {
     updateDatasetSettings(id, settings) {
         this.data_sets[id].setSettings(settings);
         this.render();
+    }
+
+    resize(width, height) {
+        this.canvas.resize(this.img_width, this.img_height, width, height);
+        this.render();
+    }
+
+    setSettings(editor) {
+        fetch(defjson)
+        .then(r => r.json())
+        .then(data => {
+            merge(this, data);
+            editor.updateSettingsInputs(data);
+            this.render();
+        });
+    }
+
+    updateSettings(settings) {
+        merge(this, settings);
+        // this.resize();
+    }
+}
+
+function merge(graph, settings) {
+    for (const key in settings) {
+        if(typeof graph[key] === 'object' && !Array.isArray(settings[key])) {
+            merge(graph[key], settings[key]);
+        } else {
+            graph[key] = settings[key];
+        }
     }
 }
 
