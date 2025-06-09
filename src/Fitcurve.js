@@ -8,7 +8,8 @@ export default class Fitcurve {
         this.curve = 0; // pensar na implementação
     }
 
-    static regression() {
+    //Levenberg–Marquardt
+    static regression(data, equation_str, ) {
 
     }
 }

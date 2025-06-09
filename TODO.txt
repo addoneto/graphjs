@@ -1,0 +1,9 @@
+- checar quando colar os dados se a primeira linha é numerica, caso for não alterar os labels e só colar os números
+- refatorar código de download (sem criar o <a>)
+- generalização de regressão para expressões arbitrárias
+- hover no ponto faz highlight no gráfico
+- calcular simplificações no frame boundaries -> em alguns casos faz sentido somar 1 no _order para que o gráfico fique mais limpo
+- mais edições nos conjuntos de dados (apagar conjunto, editar dados, adicionar linha, apagar linha)
+- adicionar precisão em cada dado (representar com linhas tipo bloxplot)
+- refatorar métodos estáticos do Editor
+- criar histograma

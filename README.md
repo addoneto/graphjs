@@ -1,5 +1,5 @@
 # Graph JS
-Native javascript charts generator 
+Projeto que gera de forma nativa gráficos, com um editor interativo que permite customizar visualmente a imagem e alterar dados. 
 
 ![Preview do projeto](./assets/screenshot-preview.png)
 

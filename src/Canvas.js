@@ -42,6 +42,7 @@ export default class Canvas {
         this.el.style.height = this.height + "px";
     }
 
+    // usar o próprio botão com um <a>, assim não é necessário criar um novo objeto
     download(n){
         const img = this.el.toDataURL('image/png');
         const link = document.createElement('a');
