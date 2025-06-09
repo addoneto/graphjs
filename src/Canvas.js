@@ -41,4 +41,14 @@ export default class Canvas {
         this.el.style.width = this.width + "px";
         this.el.style.height = this.height + "px";
     }
+
+    download(n){
+        const img = this.el.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = img;
+        link.download = `graph-${n}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }

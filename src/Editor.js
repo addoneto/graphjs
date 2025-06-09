@@ -20,7 +20,7 @@ let html = `
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                         </button>
-                        <button>
+                        <button id="download-{}">
                             <svg data-slot="icon" fill="none" stroke-width="1" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -287,6 +287,8 @@ export default class Editor {
 
         this.data_set_container = this.primary_editor.children[0];
 
+        // venho usando funções estáticas pois o this no contexto da função não retorna o objeto
+        // vale mais testes para verificar se esse patern é mesmo necessário
         this.data_set_container.getElementsByClassName("add-btn")[0].addEventListener("click", () => {
             Editor.createDataSet(this);
         });
@@ -309,6 +311,17 @@ export default class Editor {
         this.resize();
 
         Editor.createDataSet(this);
+
+        let download_btn = document.getElementById(`download-${n}`);
+
+        // o pattern de metodos estáticos não é necessário !
+        download_btn.addEventListener("click", () => {
+            this.downloadGraph(n);
+        });
+    }
+
+    downloadGraph(id) {
+        this.canvas.download(id);
     }
 
     getSettingsInputs(n) {
