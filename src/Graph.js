@@ -396,7 +396,9 @@ export default class Graph {
     }
 
     updateSettings(settings) {
+        console.log(this);
         merge(this, settings);
+        console.log(this);
         // this.resize();
     }
 }

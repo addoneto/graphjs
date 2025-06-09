@@ -340,12 +340,12 @@ export default class Editor {
             }
         }
 
-        console.log(this.settings_inputs);
+        // console.log(this.settings_inputs);
     }
 
     // checar código
     updateSettingsInputs(data) {
-        console.log(data);
+        // console.log(data);
         let stack = [{
             objInput: this.settings_inputs,
             objData: data
@@ -569,14 +569,15 @@ export default class Editor {
             for (let key in inputNode) {
                 const val = inputNode[key];
 
-                if (
-                    typeof val === 'object' &&
-                    val !== null &&
-                    !Array.isArray(val)
-                ) {
+                if (typeof val === 'object' && val !== null && !Array.isArray(val) ) {
                     // Se tiver .value, considera um input real
                     if ('value' in val) {
-                        outputNode[key] = val.value;
+                        if(val.value !== '' && isFinite(val.value)){
+                            outputNode[key] = Number(val.value);
+                        } else {
+                            outputNode[key] = val.value;
+                        }
+                        
                     } else {
                         // Caso contrário, é um objeto aninhado
                         outputNode[key] = {};
